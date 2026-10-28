@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0d12">
+<title>ZirveX | Hesap Değerleme</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b0d12;color:#fff;font-family:Arial,sans-serif;padding:20px}
+header{text-align:center;padding:20px 0}
+.logo{font-size:35px;font-weight:900;color:#ff334f}
+h1{font-size:25px;margin:8px}
+p{color:#aab2c2;font-size:14px}
+main{max-width:600px;margin:auto}
+.card{background:#171c26;border:1px solid #303849;border-radius:16px;padding:18px;margin:15px 0}
+label{display:block;margin-top:15px;font-size:14px}
+input,select,button{width:100%;padding:13px;margin-top:7px;border-radius:9px;border:1px solid #394356;background:#0d1118;color:white;font-size:15px}
+button{background:#ff334f;border:0;font-weight:bold;cursor:pointer;margin-top:20px}
+.result{background:#25131b;border:1px solid #63303d;border-radius:12px;padding:18px;margin-top:15px}
+.price{font-size:32px;font-weight:bold;color:#ff5268}
+.small{font-size:12px;color:#aab2c2}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">ZIRVEX</div>
+<h1>Hesap Değerleme Sistemi</h1>
+<p>Oyun hesabının tahmini değerini hesapla.</p>
+</header>
+<main>
+<div class="card">
+<h3>Hesap bilgileri</h3>
+<label>Oyun seç</label>
+<select id="game">
+<option>PUBG Mobile</option>
+<option>PUBG PC</option>
+<option>VALORANT</option>
+<option>CS2</option>
+<option>Fortnite</option>
+<option>Free Fire</option>
+<option>Call of Duty Mobile</option>
+<option>GTA V</option>
+<option>Wolfteam</option>
+<option>Minecraft</option>
+<option>Roblox</option>
+<option>League of Legends</option>
+<option>Mobile Legends</option>
+<option>Genshin Impact</option>
+<option>Honkai: Star Rail</option>
+<option>EA SPORTS FC</option>
+<option>Apex Legends</option>
+<option>Rainbow Six Siege</option>
+<option>Diğer oyun</option>
+</select>
+<label>Hesap seviyesi</label>
+<input id="level" type="number" min="0" value="50">
+<label>Nadir kostüm / eşya sayısı</label>
+<input id="skins" type="number" min="0" value="5">
+<label>Premium skin sayısı</label>
+<input id="premium" type="number" min="0" value="2">
+<label>Yükseltilebilir silah / eşya sayısı</label>
+<input id="upgrades" type="number" min="0" value="1">
+<label>Rütbe</label>
+<select id="rank">
+<option value="0">Belirtilmedi</option>
+<option value="1">Düşük</option>
+<option value="2">Orta</option>
+<option value="3">Yüksek</option>
+<option value="4">En üst seviye</option>
+</select>
+<label>Hesap yaşı (yıl)</label>
+<input id="age" type="number" min="0" value="1">
+<button onclick="calculate()">HESAP DEĞERİNİ HESAPLA</button>
+<div class="result">
+<p>Tahmini hesap değeri</p>
+<div class="price" id="price">₺ —</div>
+<p id="range">Önce hesap özelliklerini gir.</p>
+<p id="buy"></p>
+<p class="small">Bu fiyatlar örnek katsayılara dayanır, gerçek piyasa fiyatı değildir.</p>
+</div>
+</div>
+</main>
+<script>
+function calculate(){
+const game=document.getElementById('game').value;
+const level=Math.max(0,Math.min(100000,Number(document.getElementById('level').value)||0));
+const skins=Math.max(0,Math.min(10000,Number(document.getElementById('skins').value)||0));
+const premium=Math.max(0,Math.min(10000,Number(document.getElementById('premium').value)||0));
+const upgrades=Math.max(0,Math.min(1000,Number(document.getElementById('upgrades').value)||0));
+const rank=Number(document.getElementById('rank').value);
+const age=Math.max(0,Math.min(30,Number(document.getElementById('age').value)||0));
+const bases={
+'PUBG Mobile':250,'PUBG PC':180,'VALORANT':250,'CS2':200,
+'Fortnite':250,'Free Fire':180,'Call of Duty Mobile':180,
+'GTA V':150,'Wolfteam':100,'Minecraft':150,'Roblox':150,
+'League of Legends':150,'Mobile Legends':150,'Genshin Impact':200,
+'Honkai: Star Rail':200,'EA SPORTS FC':180,'Apex Legends':180,
+'Rainbow Six Siege':180,'Diğer oyun':100
+};
+const base=bases[game]||100;
+const value=base+Math.min(level,100)*2+rank*50+
+Math.min(skins,30)*35+Math.min(premium,15)*75+
+Math.min(upgrades,10)*80+Math.min(age,10)*10;
+const money=n=>new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY',maximumFractionDigits:0}).format(n);
+document.getElementById('price').textContent=money(value);
+document.getElementById('range').textContent='Olası tahmin aralığı: '+money(value*.55)+' – '+money(value*1.6);
+document.getElementById('buy').textContent='Örnek alış üst sınırı: '+money(value*.55);
+}
+</script>
+</body>
+</html>
